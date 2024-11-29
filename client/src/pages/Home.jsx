@@ -1,14 +1,13 @@
-import { useState } from 'react'
+// src/pages/Home.jsx
+import Products from '../components/Products';
 
-
-function App() {
-  const [count, setCount] = useState(0)
-
+const Home = () => {
   return (
-    <>
-     <h2>zachary was here</h2>
-    </>
-  )
-}
+    <div className="container mx-auto">
+      <h1 className="text-3xl font-bold text-center my-8">Our Products</h1>
+      <Products />
+    </div>
+  );
+};
 
-export default App
+export default Home;

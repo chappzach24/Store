@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import './output.css';
 
 const App = () => {
   return (
