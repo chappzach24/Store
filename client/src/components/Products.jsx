@@ -1,12 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-
-const getProducts = async () => {
-  const response = await fetch('http://localhost:5000/api/products');
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
-};
+import { getProducts } from '../services/api';
 
 const Products = () => {
   const { data: products, isLoading, error } = useQuery({
@@ -39,9 +32,9 @@ const Products = () => {
           <p className="text-gray-600 mt-2">{product.description}</p>
           <p className="text-green-600 font-bold mt-2">${product.price}</p>
           <p className="text-sm text-gray-500 mt-1">Category: {product.category}</p>
-          <p className="text-sm text-gray-500 mt-1">
+          {/* <p className="text-sm text-gray-500 mt-1">
             Stock: {product.quantity} {product.inStock ? '(In Stock)' : '(Out of Stock)'}
-          </p>
+          </p> */}
         </div>
       ))}
     </div>
