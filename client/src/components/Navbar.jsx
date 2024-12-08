@@ -1,7 +1,38 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Get user from localStorage
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/auth');
+  };
+
+  const AuthButton = () => {
+    if (user) {
+      return (
+        <div className="flex items-center space-x-3">
+          <span className="text-white">Welcome, {user.username}</span>
+          <button 
+            onClick={handleLogout}
+            className="text-white hover:text-gray-300"
+          >
+            Logout
+          </button>
+        </div>
+      );
+    }
+    return (
+      <a href="/auth" className="text-white hover:text-gray-300">
+        Login | Signup
+      </a>
+    );
+  };
 
   return (
     <nav className="bg-gray-800 p-4">
@@ -34,8 +65,9 @@ const Navbar = () => {
           <div className="hidden md:flex space-x-4">
             <a href="/" className="text-white hover:text-gray-300">Home</a>
             <a href="/about" className="text-white hover:text-gray-300">About</a>
-            <a href="/services" className="text-white hover:text-gray-300">Services</a>
+            <a href="/services" className="text-white hover:text-gray-300">FAQ</a>
             <a href="/contact" className="text-white hover:text-gray-300">Contact</a>
+            <AuthButton />
           </div>
         </div>
 
@@ -47,6 +79,7 @@ const Navbar = () => {
               <a href="/about" className="text-white hover:text-gray-300">About</a>
               <a href="/services" className="text-white hover:text-gray-300">Services</a>
               <a href="/contact" className="text-white hover:text-gray-300">Contact</a>
+              <AuthButton />
             </div>
           </div>
         )}

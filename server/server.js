@@ -59,5 +59,3 @@ app.listen(PORT, () => {
   console.log(`➜ Cart:      http://localhost:${PORT}/api/cart`);
 });
 
-
-
