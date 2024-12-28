@@ -29,6 +29,7 @@ const userController = {
             _id: user._id,
             username: user.username,
             email: user.email,
+            isAdmin: user.isAdmin,
             token: generateToken(user._id)
           });
         } else {
@@ -46,7 +47,7 @@ const userController = {
   // Register new user
   createUser: async (req, res) => {
     try {
-      const { username, email, password } = req.body;
+      const { username, email, password, isAdmin } = req.body; 
   
       // Check if user exists
       const userExists = await User.findOne({ email });
@@ -54,11 +55,12 @@ const userController = {
         return res.status(400).json({ message: 'User already exists' });
       }
       
-      // Create user (password will be hashed by the pre-save middleware)
+      
       const user = await User.create({
         username,
         email,
-        password
+        password,
+        isAdmin: isAdmin || false 
       });
   
       if (user) {
@@ -66,6 +68,7 @@ const userController = {
           _id: user._id,
           username: user.username,
           email: user.email,
+          isAdmin: user.isAdmin,
           token: generateToken(user._id)
         });
       } else {
@@ -151,6 +154,19 @@ const userController = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    await User.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 

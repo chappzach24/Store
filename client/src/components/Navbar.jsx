@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,6 +7,7 @@ const Navbar = () => {
 
   // Get user from localStorage
   const user = JSON.parse(localStorage.getItem('user'));
+  console.log('User data:', user);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -18,13 +19,14 @@ const Navbar = () => {
       return (
         <div className="flex items-center space-x-3">
           <span className="text-white">Welcome, {user.username}</span>
-          {user.isAdmin && (
-            <a 
-              href="/admin/products" 
+          {/* Check if user exists AND has isAdmin property */}
+          {user && user.isAdmin && (
+            <Link 
+              to="/admin/products" 
               className="text-white hover:text-gray-300"
             >
               Admin Dashboard
-            </a>
+            </Link>
           )}
           <button 
             onClick={handleLogout}
@@ -36,9 +38,9 @@ const Navbar = () => {
       );
     }
     return (
-      <a href="/auth" className="text-white hover:text-gray-300">
+      <Link to="/auth" className="text-white hover:text-gray-300">
         Login | Signup
-      </a>
+      </Link>
     );
   };
 
@@ -47,7 +49,7 @@ const Navbar = () => {
       <div className="max-w-6xl mx-auto">
         {/* Desktop Navigation */}
         <div className="flex items-center justify-between">
-          <div className="text-white font-bold text-xl">Logo</div>
+          <Link to="/" className="text-white font-bold text-xl">LOGO</Link>
           
           {/* Hamburger Button */}
           <button 
@@ -70,11 +72,16 @@ const Navbar = () => {
           </button>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
-            <a href="/" className="text-white hover:text-gray-300">Home</a>
-            <a href="/about" className="text-white hover:text-gray-300">About</a>
-            <a href="/services" className="text-white hover:text-gray-300">FAQ</a>
-            <a href="/contact" className="text-white hover:text-gray-300">Contact</a>
+          <div className="hidden md:flex items-center space-x-4">
+            <Link to="/" className="text-white hover:text-gray-300">
+              Home
+            </Link>
+            <Link to="/products" className="text-white hover:text-gray-300">
+              Products
+            </Link>
+            <Link to="/contact" className="text-white hover:text-gray-300">
+              Contact
+            </Link>
             <AuthButton />
           </div>
         </div>
@@ -83,11 +90,39 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden mt-4">
             <div className="flex flex-col space-y-2">
-              <a href="/" className="text-white hover:text-gray-300">Home</a>
-              <a href="/about" className="text-white hover:text-gray-300">About</a>
-              <a href="/services" className="text-white hover:text-gray-300">Services</a>
-              <a href="/contact" className="text-white hover:text-gray-300">Contact</a>
-              <AuthButton />
+              <Link 
+                to="/" 
+                className="text-white hover:text-gray-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
+              <Link 
+                to="/products" 
+                className="text-white hover:text-gray-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Products
+              </Link>
+              <Link 
+                to="/contact" 
+                className="text-white hover:text-gray-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+              {user && user.isAdmin && (
+                <Link 
+                  to="/admin/products" 
+                  className="text-white hover:text-gray-300"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admin Dashboard
+                </Link>
+              )}
+              <div onClick={() => setIsOpen(false)}>
+                <AuthButton />
+              </div>
             </div>
           </div>
         )}
