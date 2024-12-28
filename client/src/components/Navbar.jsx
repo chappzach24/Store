@@ -18,6 +18,14 @@ const Navbar = () => {
       return (
         <div className="flex items-center space-x-3">
           <span className="text-white">Welcome, {user.username}</span>
+          {user.isAdmin && (
+            <a 
+              href="/admin/products" 
+              className="text-white hover:text-gray-300"
+            >
+              Admin Dashboard
+            </a>
+          )}
           <button 
             onClick={handleLogout}
             className="text-white hover:text-gray-300"

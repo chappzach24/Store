@@ -32,9 +32,9 @@ const Products = () => {
           <p className="text-gray-600 mt-2">{product.description}</p>
           <p className="text-green-600 font-bold mt-2">${product.price}</p>
           <p className="text-sm text-gray-500 mt-1">Category: {product.category}</p>
-          {/* <p className="text-sm text-gray-500 mt-1">
+           {/* <p className="text-sm text-gray-500 mt-1">
             Stock: {product.quantity} {product.inStock ? '(In Stock)' : '(Out of Stock)'}
-          </p> */}
+          </p>  */}
         </div>
       ))}
     </div>
