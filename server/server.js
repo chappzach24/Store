@@ -1,8 +1,7 @@
-// server.js
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
 
 // Load environment variables
 dotenv.config();
@@ -14,11 +13,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB Error:', err.message));
 
 // Routes
 const userRoutes = require('./routes/user.routes');
@@ -49,13 +43,23 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`\n🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-  console.log('\n📍 API endpoints:');
-  console.log(`➜ Users:     http://localhost:${PORT}/api/users`);
-  console.log(`➜ Products:  http://localhost:${PORT}/api/products`);
-  console.log(`➜ Cart:      http://localhost:${PORT}/api/cart`);
-});
+// Initialize Database and Start Server
+const startServer = async () => {
+  try {
+    await connectDB(); // Connect to MongoDB first
+    
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`\n🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+      console.log('\n📍 API endpoints:');
+      console.log(`➜ Users:     http://localhost:${PORT}/api/users`);
+      console.log(`➜ Products:  http://localhost:${PORT}/api/products`);
+      console.log(`➜ Cart:      http://localhost:${PORT}/api/cart`);
+    });
+  } catch (err) {
+    console.error('❌ Failed to start server:', err);
+    process.exit(1);
+  }
+};
 
+startServer();
